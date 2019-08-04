@@ -13,12 +13,12 @@ class TheIntercept extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<GetFeed>(
-          builder: (_) => GetFeedImpl(),
-          dispose: (_, GetFeed value) => value?.dispose()
+        Provider<GetFeedUseCase>(
+          builder: (_) => GetFeedUseCaseImpl(),
+          dispose: (_, GetFeedUseCase value) => value?.dispose()
         ),
         Provider<NavigationDrawerUseCase>(
-          builder: (_) => NavigationDrawerUseCase(0),
+          builder: (_) => NavigationDrawerUseCaseImpl(0),
           dispose: (_, NavigationDrawerUseCase value) => value?.dispose()
         )
       ],

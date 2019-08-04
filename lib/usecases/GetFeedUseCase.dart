@@ -2,37 +2,36 @@ import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:webfeed/webfeed.dart';
 
-abstract class GetFeed {
-  RssFeed feed;
-  Observable<RssFeed> feedObservable;
+abstract class GetFeedUseCase {
+  Observable<RssFeed> get feedObservable;
   getFeed();
   dispose();
 }
 
-class GetFeedImpl extends GetFeed {
+class GetFeedUseCaseImpl extends GetFeedUseCase {
   String _rssFeedUrl = "https://theintercept.com/feed/?lang=en";
-  RssFeed feed;
 
-  PublishSubject<RssFeed> _feedSubject;
+  BehaviorSubject<RssFeed> _feedSubject;
 
-  GetFeedImpl() {
-    _feedSubject = PublishSubject<RssFeed>();
+  GetFeedUseCaseImpl() {
+    _feedSubject = BehaviorSubject.seeded(null);
   }
 
+  @override
   Observable<RssFeed> get feedObservable => _feedSubject.stream;
 
   @override
   getFeed() async {
     try {
       var response = await Dio().get(_rssFeedUrl);
-      feed = RssFeed.parse(response.data.toString());
+      var feed = RssFeed.parse(response.data.toString());
+      _feedSubject.sink.add(feed);
     } catch (e) {
 
-    } finally {
-      _feedSubject.sink.add(feed);
     }
   }
 
+  @override
   dispose() {
     _feedSubject.close();
   }

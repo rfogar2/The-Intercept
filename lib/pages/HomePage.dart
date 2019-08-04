@@ -15,19 +15,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  GetFeed _getFeed;
+  GetFeedUseCase _getFeedUseCase;
   RefreshController _refreshController = RefreshController(
       initialRefresh: true);
 
   _onRefresh() async {
-    await _getFeed.getFeed();
+    await _getFeedUseCase.getFeed();
 
     _refreshController.refreshCompleted();
   }
 
   @override
   Widget build(BuildContext context) {
-    _getFeed = Provider.of<GetFeed>(context);
+    _getFeedUseCase = Provider.of<GetFeedUseCase>(context);
 
     return Scaffold(
         body: SmartRefresher(
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   Widget buildList(BuildContext context) {
     return Scrollbar(
       child: StreamBuilder(
-          stream: _getFeed.feedObservable,
+          stream: _getFeedUseCase.feedObservable,
           builder: (BuildContext context, AsyncSnapshot<RssFeed> snapshot) {
             return ListView.builder(
               itemBuilder: (c, i) => Card(
