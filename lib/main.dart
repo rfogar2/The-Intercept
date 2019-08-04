@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_intercept/pages/NavigationPage.dart';
-import 'package:the_intercept/usecases/IGetFeeds.dart';
+import 'package:the_intercept/usecases/GetFeedUseCase.dart';
 
 import 'usecases/NavigationDrawerUseCase.dart';
 
@@ -13,9 +13,9 @@ class TheIntercept extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<IGetFeeds>(
-          builder: (_) => IGetFeedsImpl(),
-          dispose: (_, IGetFeeds value) => value?.dispose()
+        Provider<GetFeed>(
+          builder: (_) => GetFeedImpl(),
+          dispose: (_, GetFeed value) => value?.dispose()
         ),
         Provider<NavigationDrawerUseCase>(
           builder: (_) => NavigationDrawerUseCase(0),

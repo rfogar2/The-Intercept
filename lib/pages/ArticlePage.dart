@@ -15,20 +15,22 @@ class ArticlePage extends StatelessWidget {
           title: Text(article.dc.creator),
           backgroundColor: Colors.black,
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.only(left: 12.0, right: 12.0),
-          child: Column(
-            children: <Widget>[
-              Text(
-                article.title,
-                style: Theme.of(context).textTheme.display1
-              ),
-              article.media.thumbnails.isNotEmpty ? Image.network(article.media.thumbnails.first.url) : Container(),
-              Html(
-                data: article.content.value,
-                onLinkTap: (link) { print(link); },
+        body: Scrollbar(
+          child: SingleChildScrollView(
+              padding: EdgeInsets.only(left: 12.0, right: 12.0),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                      article.title,
+                      style: Theme.of(context).textTheme.display1
+                  ),
+                  article.media.thumbnails.isNotEmpty ? Image.network(article.media.thumbnails.first.url) : Container(),
+                  Html(
+                    data: article.content.value,
+                    onLinkTap: (link) { print(link); },
+                  )
+                ],
               )
-            ],
           )
         )
     );

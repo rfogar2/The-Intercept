@@ -47,7 +47,11 @@ class _NavigationPageState extends State<NavigationPage> {
             DrawerHeader(
               child: Text(
                   "The Intercept",
-                  style: TextStyle(color: Colors.white)
+                  style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                    fontSize: 22.0
+                  )
               ),
               decoration: BoxDecoration(
                   color: Colors.black

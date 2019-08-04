@@ -2,20 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:webfeed/webfeed.dart';
 
-abstract class IGetFeeds {
+abstract class GetFeed {
   RssFeed feed;
   Observable<RssFeed> feedObservable;
   getFeed();
   dispose();
 }
 
-class IGetFeedsImpl extends IGetFeeds {
+class GetFeedImpl extends GetFeed {
   String _rssFeedUrl = "https://theintercept.com/feed/?lang=en";
   RssFeed feed;
 
   PublishSubject<RssFeed> _feedSubject;
 
-  IGetFeedsImpl() {
+  GetFeedImpl() {
     _feedSubject = PublishSubject<RssFeed>();
   }
 
