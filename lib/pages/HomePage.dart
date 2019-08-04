@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:the_intercept/usecases/IGetFeeds.dart';
 import 'package:webfeed/webfeed.dart';
+
+import 'ArticlePage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -13,7 +16,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   IGetFeeds _iGetFeeds;
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController = RefreshController(
+      initialRefresh: true);
 
   _onRefresh() async {
     await _iGetFeeds.getFeed();
@@ -26,25 +30,13 @@ class _HomePageState extends State<HomePage> {
     _iGetFeeds = Provider.of<IGetFeeds>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: StreamBuilder(
-            stream: _iGetFeeds.feedObservable,
-            builder: (BuildContext context, AsyncSnapshot<RssFeed> snapshot) {
-              return Text(snapshot != null && snapshot.data != null ? snapshot.data.title : "Loading...");
-            }
-        ),
-      ),
-      body: Center(
-          child: Scaffold(
-              body: SmartRefresher(
-                  enablePullDown: true,
-                  enablePullUp: false,
-                  controller: _refreshController,
-                  onRefresh: _onRefresh,
-                  child: buildList(context)
-              )
-          )
-      ),
+        body: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: false,
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            child: buildList(context)
+        )
     );
   }
 
@@ -73,21 +65,8 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Scaffold(
-                appBar: AppBar(title: Text(item.title)),
-                body: SingleChildScrollView(
-                    child: Text(item.content.value)
-                )
-            )
+            builder: (context) => ArticlePage(article: item)
         )
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _refreshController.dispose();
-    _iGetFeeds.dispose();
   }
 }
